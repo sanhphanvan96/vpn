@@ -1,0 +1,67 @@
+- name: Update all packages to their latest version
+  become: true
+  apt:
+    update_cache: yes
+
+- name: Install pip3
+  apt:
+    name:
+      - python3-pip
+
+- name: Install Docker SDK for Python https://docs.ansible.com/ansible/latest/scenario_guides/guide_docker.html
+  pip:
+    name: docker
+
+- name: Set timezone to Asia/Bangkok
+  become: true
+  shell: timedatectl set-timezone Asia/Bangkok
+
+- name: Set language and locale variables
+  become: true
+  become_user: ubuntu
+  lineinfile:
+    path: ~/.bashrc
+    line: "{{ item }}"
+  with_items:
+    - "export LANGUAGE=en_US.UTF-8"
+    - "export LC_ALL=en_US.UTF-8"
+    - "export LC_CTYPE=en_US.UTF-8"
+    - "export LANG=en_US.UTF-8"
+
+- name: Install psutil Python package
+  pip:
+    name: psutil
+    executable: pip3
+
+- name: Deploy prevent_idle script
+  template:
+    src: templates/prevent_idle.py
+    dest: /home/ubuntu/prevent_idle.py
+    owner: ubuntu
+    group: ubuntu
+
+- name: Create prevent_idle service file
+  become: true
+  copy:
+    content: |
+      [Unit]
+      Description=Prevent Idle Detection
+      After=network.target
+
+      [Service]
+      User=ubuntu
+      WorkingDirectory=/home/ubuntu
+      ExecStart=/usr/bin/env python3 /home/ubuntu/prevent_idle.py
+      Restart=always
+
+      [Install]
+      WantedBy=multi-user.target
+    dest: /etc/systemd/system/prevent_idle.service
+  notify: Reload Systemd daemon
+
+- name: Start and enable prevent_idle service
+  become: true
+  systemd:
+    name: prevent_idle
+    state: started
+    enabled: yes

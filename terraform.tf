@@ -6,7 +6,7 @@ terraform {
       name = "vpn"
     }
   }
-
+  
   required_providers {
     oci = {
       source  = "hashicorp/oci"

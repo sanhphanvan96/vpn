@@ -1,0 +1,12 @@
+[Unit]
+Description=Prevent Idle Detection
+After=network.target
+
+[Service]
+User=ubuntu
+WorkingDirectory=/home/ubuntu
+ExecStart=/usr/bin/python3 /home/ubuntu/prevent_idle.py
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

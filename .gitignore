@@ -3,3 +3,7 @@
 *.pem
 *.terraform.lock.hcl
 *.tfvars
+*.tfstate*
+
+#ansbile galaxy
+ansible/roles/geerlingguy.docker/
