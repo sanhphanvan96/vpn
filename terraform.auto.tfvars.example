@@ -5,6 +5,6 @@ region = "ap-osaka-1"
 compartment_id = "ocid1.tenancy.oc1..REDACTED" # likely the same as tenancy_ocid; sudo oci iam availability-domain list
 private_key = <<-EOF
 -----BEGIN PRIVATE KEY-----
-MIIEvwIBADANBgkqhkiG9w0BAQEFAASCBKkwggSlAgEAAoIBAQDjFM7nnlQKsL9t
+XXXXvwIBADANBgkqhkiG9w0BAQEFAASCBKkwggSlAgEAAoIBAQDjFM7nnlQKXXXX
 -----END PRIVATE KEY-----
 EOF
